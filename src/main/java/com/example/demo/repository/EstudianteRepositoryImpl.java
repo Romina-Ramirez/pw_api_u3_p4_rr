@@ -40,7 +40,7 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 	@Override
 	public void actualizarParcial(String cedulaActual, String nuevaCedula) {
 		Query myQuery = this.entityManager
-				.createQuery("UPDATE Estudiante e SET e.cedula =:datocedula WHERE e.cedula =:datoCondicion");
+				.createQuery("UPDATE Estudiante e SET e.cedula =:datoCedula WHERE e.cedula =:datoCondicion");
 		myQuery.setParameter("datoCedula", nuevaCedula);
 		myQuery.setParameter("datoCondicion", cedulaActual);
 		myQuery.executeUpdate();

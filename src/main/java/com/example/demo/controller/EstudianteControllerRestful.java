@@ -25,37 +25,32 @@ public class EstudianteControllerRestful {
 	private IEstudianteService estudianteService;
 
 	// GET
-	@GetMapping(path = "/buscar/{cedula}")
+	@GetMapping(path = "/{cedula}")
 	public Estudiante consultarPorCedula(@PathVariable String cedula) {
 		return this.estudianteService.consultarPorCedula(cedula);
 	}
-	
-//	@GetMapping(path = "/buscarTodos")
-//	public List<Estudiante> consultarTodos(){
-//		return this.estudianteService.consultarTodos();
-//	}
-	
-	@GetMapping(path = "/buscarTodos")
-	public List<Estudiante> consultarTodos(@RequestParam String provincia){
-		//buscarTodos?provincia=Pichincha
+
+	@GetMapping
+	public List<Estudiante> consultarTodos(@RequestParam String provincia) {
+		// ?provincia=Pichincha
 		return this.estudianteService.consultarTodos(provincia);
 	}
 
 	// POST
-	@PostMapping(path = "/insertar")
+	@PostMapping
 	public void insertar(@RequestBody Estudiante estudiante) {
 		this.estudianteService.insertar(estudiante);
 	}
 
 	// PUT
-	@PutMapping(path = "/actualizar/{identificador}")
+	@PutMapping(path = "/{identificador}")
 	public void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer identificador) {
 		estudiante.setId(identificador);
 		this.estudianteService.actualizar(estudiante);
 	}
 
 	// PATCH
-	@PatchMapping(path = "/actualizarParcial/{identificador}")
+	@PatchMapping(path = "/{identificador}")
 	public void actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable Integer identificador) {
 		estudiante.setId(identificador);
 		Estudiante e1 = this.estudianteService.consultarPorID(identificador);
@@ -64,7 +59,7 @@ public class EstudianteControllerRestful {
 	}
 
 	// DELETE
-	@DeleteMapping(path = "/eliminar/{id}")
+	@DeleteMapping(path = "/{id}")
 	public void eliminar(@PathVariable Integer id) {
 		this.estudianteService.eliminar(id);
 	}

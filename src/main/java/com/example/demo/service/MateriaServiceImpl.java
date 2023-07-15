@@ -18,8 +18,23 @@ public class MateriaServiceImpl implements IMateriaService {
 	}
 
 	@Override
-	public Materia buscarPorCodigo(String codigo) {
-		return this.materiaRepository.consultarPorCodigo(codigo);
+	public Materia consultarPorCodigo(String codigo) {
+		return this.materiaRepository.buscarPorCodigo(codigo);
+	}
+
+	@Override
+	public Materia consultarPorId(Integer id) {
+		return this.materiaRepository.buscarPorId(id);
+	}
+
+	@Override
+	public void actualizar(Materia materia) {
+		this.materiaRepository.actualizar(materia);
+	}
+
+	@Override
+	public void eliminar(Integer id) {
+		this.materiaRepository.borrar(id);
 	}
 
 }

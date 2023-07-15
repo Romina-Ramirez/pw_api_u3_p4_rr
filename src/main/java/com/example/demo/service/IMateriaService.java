@@ -6,6 +6,12 @@ public interface IMateriaService {
 
 	public void insertar(Materia materia);
 
-	public Materia buscarPorCodigo(String codigo);
+	public Materia consultarPorCodigo(String codigo);
+
+	public Materia consultarPorId(Integer id);
+
+	public void actualizar(Materia materia);
+
+	public void eliminar(Integer id);
 
 }
