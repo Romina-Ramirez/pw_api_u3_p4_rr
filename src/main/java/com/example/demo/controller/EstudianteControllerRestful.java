@@ -3,6 +3,9 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,14 +29,23 @@ public class EstudianteControllerRestful {
 
 	// GET
 	@GetMapping(path = "/{cedula}")
-	public Estudiante consultarPorCedula(@PathVariable String cedula) {
-		return this.estudianteService.consultarPorCedula(cedula);
+	public ResponseEntity<Estudiante> consultarPorCedula(@PathVariable String cedula) {
+		return ResponseEntity.status(227).body(this.estudianteService.consultarPorCedula(cedula));
+	}
+
+	@GetMapping(path = "/status/{cedula}")
+	public ResponseEntity<Estudiante> consultarPorCedulaStatus(@PathVariable String cedula) {
+		return ResponseEntity.status(HttpStatus.OK).body(this.estudianteService.consultarPorCedula(cedula));
 	}
 
 	@GetMapping
-	public List<Estudiante> consultarTodos(@RequestParam String provincia) {
+	public ResponseEntity<List<Estudiante>> consultarTodos(@RequestParam String provincia) {
 		// ?provincia=Pichincha
-		return this.estudianteService.consultarTodos(provincia);
+		List<Estudiante> lista = this.estudianteService.consultarTodos(provincia);
+		HttpHeaders cabeceras = new HttpHeaders();
+		cabeceras.add("detalleMensaje", "Ciudadanos consultados exitosamente");
+		cabeceras.add("valorAPI", "Incalculable");
+		return new ResponseEntity<>(lista, cabeceras, 228);
 	}
 
 	// POST
@@ -54,8 +66,7 @@ public class EstudianteControllerRestful {
 	public void actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable Integer identificador) {
 		estudiante.setId(identificador);
 		Estudiante e1 = this.estudianteService.consultarPorID(identificador);
-		e1.setCedula(estudiante.getCedula());
-		this.estudianteService.actualizar(e1);
+		this.estudianteService.actualizarParcial(e1.getCedula(), estudiante.getCedula());
 	}
 
 	// DELETE

@@ -44,4 +44,9 @@ public class EstudianteServiceImpl implements IEstudianteService {
 		return this.estudianteRepository.buscarTodos(provincia);
 	}
 
+	@Override
+	public void actualizarParcial(String cedulaActual, String nuevaCedula) {
+		this.estudianteRepository.actualizarParcial(cedulaActual, nuevaCedula);
+	}
+
 }
