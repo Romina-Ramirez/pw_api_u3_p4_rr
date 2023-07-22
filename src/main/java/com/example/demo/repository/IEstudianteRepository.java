@@ -9,6 +9,8 @@ public interface IEstudianteRepository {
 	public Estudiante seleccionarPorCedula(String cedula);
 
 	public void guardar(Estudiante estudiante);
+	
+	public Estudiante guardarEstudiante(Estudiante estudiante);
 
 	public void actualizar(Estudiante estudiante);
 

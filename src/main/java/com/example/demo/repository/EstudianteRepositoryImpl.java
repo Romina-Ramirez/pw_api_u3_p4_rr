@@ -64,4 +64,10 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 		return myQuery.getResultList();
 	}
 
+	@Override
+	public Estudiante guardarEstudiante(Estudiante estudiante) {
+		this.guardar(estudiante);
+		return this.buscarPorID(estudiante.getId());
+	}
+
 }

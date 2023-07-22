@@ -49,4 +49,9 @@ public class EstudianteServiceImpl implements IEstudianteService {
 		this.estudianteRepository.actualizarParcial(cedulaActual, nuevaCedula);
 	}
 
+	@Override
+	public Estudiante insertarEstudiante(Estudiante estudiante) {
+		return this.estudianteRepository.guardarEstudiante(estudiante);
+	}
+
 }

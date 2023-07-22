@@ -9,6 +9,8 @@ public interface IEstudianteService {
 	public Estudiante consultarPorCedula(String cedula);
 
 	public void insertar(Estudiante estudiante);
+	
+	public Estudiante insertarEstudiante(Estudiante estudiante);
 
 	public void actualizar(Estudiante estudiante);
 
