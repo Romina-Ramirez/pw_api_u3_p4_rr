@@ -57,7 +57,7 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 	}
 
 	@Override
-	public List<Estudiante> buscarTodos(String provincia) {
+	public List<Estudiante> buscarTodosPorProvincia(String provincia) {
 		TypedQuery<Estudiante> myQuery = this.entityManager
 				.createQuery("SELECT e FROM Estudiante e WHERE e.provincia =:datoProvincia", Estudiante.class);
 		myQuery.setParameter("datoProvincia", provincia);
@@ -68,6 +68,12 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 	public Estudiante guardarEstudiante(Estudiante estudiante) {
 		this.guardar(estudiante);
 		return this.buscarPorID(estudiante.getId());
+	}
+
+	@Override
+	public List<Estudiante> buscarTodos() {
+		TypedQuery<Estudiante> myQuery = this.entityManager.createQuery("SELECT e FROM Estudiante e", Estudiante.class);
+		return myQuery.getResultList();
 	}
 
 }

@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.IEstudianteRepository;
 import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.service.to.EstudianteTO;
 
 @Service
 public class EstudianteServiceImpl implements IEstudianteService {
@@ -40,8 +42,8 @@ public class EstudianteServiceImpl implements IEstudianteService {
 	}
 
 	@Override
-	public List<Estudiante> consultarTodos(String provincia) {
-		return this.estudianteRepository.buscarTodos(provincia);
+	public List<Estudiante> consultarTodosPorProvincia(String provincia) {
+		return this.estudianteRepository.buscarTodosPorProvincia(provincia);
 	}
 
 	@Override
@@ -52,6 +54,25 @@ public class EstudianteServiceImpl implements IEstudianteService {
 	@Override
 	public Estudiante insertarEstudiante(Estudiante estudiante) {
 		return this.estudianteRepository.guardarEstudiante(estudiante);
+	}
+
+	@Override
+	public List<EstudianteTO> consultarTodos() {
+		List<Estudiante> lista = this.estudianteRepository.buscarTodos();
+		List<EstudianteTO> listaTO = lista.stream().map(estudiante -> this.convertir(estudiante))
+				.collect(Collectors.toList());
+		return listaTO;
+	}
+
+	private EstudianteTO convertir(Estudiante estudiante) {
+		EstudianteTO estu = new EstudianteTO();
+		estu.setApellido(estudiante.getApellido());
+		estu.setCedula(estudiante.getCedula());
+		estu.setFechaNacimiento(estudiante.getFechaNacimiento());
+		estu.setNombre(estudiante.getNombre());
+		estu.setProvincia(estudiante.getProvincia());
+		estu.setId(estudiante.getId());
+		return estu;
 	}
 
 }

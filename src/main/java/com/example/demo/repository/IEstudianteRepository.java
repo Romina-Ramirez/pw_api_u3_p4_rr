@@ -9,7 +9,7 @@ public interface IEstudianteRepository {
 	public Estudiante seleccionarPorCedula(String cedula);
 
 	public void guardar(Estudiante estudiante);
-	
+
 	public Estudiante guardarEstudiante(Estudiante estudiante);
 
 	public void actualizar(Estudiante estudiante);
@@ -20,6 +20,8 @@ public interface IEstudianteRepository {
 
 	public Estudiante buscarPorID(Integer id);
 
-	public List<Estudiante> buscarTodos(String provincia);
+	public List<Estudiante> buscarTodosPorProvincia(String provincia);
+
+	public List<Estudiante> buscarTodos();
 
 }

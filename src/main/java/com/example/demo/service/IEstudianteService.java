@@ -3,13 +3,14 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.repository.modelo.Estudiante;
+import com.example.demo.service.to.EstudianteTO;
 
 public interface IEstudianteService {
 
 	public Estudiante consultarPorCedula(String cedula);
 
 	public void insertar(Estudiante estudiante);
-	
+
 	public Estudiante insertarEstudiante(Estudiante estudiante);
 
 	public void actualizar(Estudiante estudiante);
@@ -20,6 +21,8 @@ public interface IEstudianteService {
 
 	public Estudiante consultarPorID(Integer id);
 
-	public List<Estudiante> consultarTodos(String provincia);
+	public List<Estudiante> consultarTodosPorProvincia(String provincia);
+
+	public List<EstudianteTO> consultarTodos();
 
 }

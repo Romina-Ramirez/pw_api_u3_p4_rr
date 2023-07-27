@@ -1,8 +1,12 @@
 package com.example.demo.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.service.IEstudianteService;
+import com.example.demo.service.to.EstudianteTO;
+import com.example.demo.service.to.MateriaTO;;
 
 @RestController
 @RequestMapping("/estudiantes")
@@ -39,11 +45,27 @@ public class EstudianteControllerRestful {
 	@GetMapping
 	public ResponseEntity<List<Estudiante>> consultarTodos(@RequestParam String provincia) {
 		// ?provincia=Pichincha
-		List<Estudiante> lista = this.estudianteService.consultarTodos(provincia);
+		List<Estudiante> lista = this.estudianteService.consultarTodosPorProvincia(provincia);
 		HttpHeaders cabeceras = new HttpHeaders();
 		cabeceras.add("detalleMensaje", "Ciudadanos consultados exitosamente");
 		cabeceras.add("valorAPI", "Incalculable");
 		return new ResponseEntity<>(lista, cabeceras, 228);
+	}
+
+	@GetMapping(path = "/hateoas")
+	public ResponseEntity<List<EstudianteTO>> consultarTodosHATEOAS() {
+		List<EstudianteTO> lista = this.estudianteService.consultarTodos();
+		for (EstudianteTO e : lista) {
+			Link myLink = linkTo(methodOn(EstudianteControllerRestful.class).buscarPorEstudiante(e.getCedula()))
+					.withRel("materias");
+			e.add(myLink);
+		}
+		return new ResponseEntity<>(lista, null, 200);
+	}
+
+	@GetMapping(path = "/{cedula}/materias")
+	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable String cedula) {
+		return null;
 	}
 
 //	// POST
@@ -51,8 +73,8 @@ public class EstudianteControllerRestful {
 //	public void insertar(@RequestBody Estudiante estudiante) {
 //		this.estudianteService.insertar(estudiante);
 //	}
-	
-	@PostMapping(consumes = MediaType.APPLICATION_XML_VALUE, produces =  MediaType.APPLICATION_XML_VALUE)
+
+	@PostMapping(consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
 	public Estudiante insertarYConsultar(@RequestBody Estudiante estudiante) {
 		return this.estudianteService.insertarEstudiante(estudiante);
 	}
