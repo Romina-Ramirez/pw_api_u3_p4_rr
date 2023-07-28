@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.service.IEstudianteService;
+import com.example.demo.service.IMateriaService;
 import com.example.demo.service.to.EstudianteTO;
 import com.example.demo.service.to.MateriaTO;;
 
@@ -34,6 +35,9 @@ public class EstudianteControllerRestful {
 
 	@Autowired
 	private IEstudianteService estudianteService;
+	
+	@Autowired
+	private IMateriaService materiaService;
 
 	// GET
 	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_XML_VALUE)
@@ -52,7 +56,7 @@ public class EstudianteControllerRestful {
 		return new ResponseEntity<>(lista, cabeceras, 228);
 	}
 
-	@GetMapping(path = "/hateoas")
+	@GetMapping(path = "/hateoas", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EstudianteTO>> consultarTodosHATEOAS() {
 		List<EstudianteTO> lista = this.estudianteService.consultarTodos();
 		for (EstudianteTO e : lista) {
@@ -63,9 +67,15 @@ public class EstudianteControllerRestful {
 		return new ResponseEntity<>(lista, null, 200);
 	}
 
-	@GetMapping(path = "/{cedula}/materias")
+	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable String cedula) {
-		return null;
+		List<MateriaTO> lista = this.materiaService.consultarPorCedulaEstudiante(cedula);
+		for (MateriaTO m : lista) {
+			Link myLink = linkTo(methodOn(MateriaControllerRestful.class).buscarPorId(m.getId()))
+					.withRel("materias");
+			m.add(myLink);
+		}
+		return new ResponseEntity<>(lista, null, 200) ;
 	}
 
 //	// POST

@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -17,18 +19,14 @@ public class Materia {
 	@SequenceGenerator(name = "seq_materia", sequenceName = "seq_materia", allocationSize = 1)
 	@Column(name = "mate_id")
 	private Integer id;
-	@Column(name = "mate_codigo")
-	private String codigo;
+	@Column(name = "mate_numero_creditos")
+	private Integer numeroCreditos;
 	@Column(name = "mate_nombre")
 	private String nombre;
-	@Column(name = "mate_tutor")
-	private String tutor;
-	@Column(name = "mate_area")
-	private String area;
-	@Column(name = "mate_horas")
-	private Integer horas;
-	@Column(name = "mate_cupos")
-	private Integer cupos;
+
+	@ManyToOne
+	@JoinColumn(name = "mate_id_estudiante")
+	private Estudiante estudiante;
 
 	// SET Y GET
 	public Integer getId() {
@@ -39,12 +37,12 @@ public class Materia {
 		this.id = id;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public Integer getNumeroCreditos() {
+		return numeroCreditos;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setNumeroCreditos(Integer numeroCreditos) {
+		this.numeroCreditos = numeroCreditos;
 	}
 
 	public String getNombre() {
@@ -55,36 +53,12 @@ public class Materia {
 		this.nombre = nombre;
 	}
 
-	public String getTutor() {
-		return tutor;
+	public Estudiante getEstudiante() {
+		return estudiante;
 	}
 
-	public void setTutor(String tutor) {
-		this.tutor = tutor;
-	}
-
-	public String getArea() {
-		return area;
-	}
-
-	public void setArea(String area) {
-		this.area = area;
-	}
-
-	public Integer getHoras() {
-		return horas;
-	}
-
-	public void setHoras(Integer horas) {
-		this.horas = horas;
-	}
-
-	public Integer getCupos() {
-		return cupos;
-	}
-
-	public void setCupos(Integer cupos) {
-		this.cupos = cupos;
+	public void setEstudiante(Estudiante estudiante) {
+		this.estudiante = estudiante;
 	}
 
 }
