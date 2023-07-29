@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,22 +32,23 @@ import com.example.demo.service.to.MateriaTO;;
 
 @RestController
 @RequestMapping("/estudiantes")
+@CrossOrigin
 public class EstudianteControllerRestful {
 
 	@Autowired
 	private IEstudianteService estudianteService;
-	
+
 	@Autowired
 	private IMateriaService materiaService;
 
 	// GET
-	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_XML_VALUE)
+	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Estudiante consultarPorCedula(@PathVariable String cedula) {
 		return this.estudianteService.consultarPorCedula(cedula);
 	}
 
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Estudiante>> consultarTodos(@RequestParam String provincia) {
 		// ?provincia=Pichincha
 		List<Estudiante> lista = this.estudianteService.consultarTodosPorProvincia(provincia);
@@ -67,15 +69,14 @@ public class EstudianteControllerRestful {
 		return new ResponseEntity<>(lista, null, 200);
 	}
 
-	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/{cedula}/materias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable String cedula) {
 		List<MateriaTO> lista = this.materiaService.consultarPorCedulaEstudiante(cedula);
 		for (MateriaTO m : lista) {
-			Link myLink = linkTo(methodOn(MateriaControllerRestful.class).buscarPorId(m.getId()))
-					.withRel("materias");
+			Link myLink = linkTo(methodOn(MateriaControllerRestful.class).buscarPorId(m.getId())).withSelfRel();
 			m.add(myLink);
 		}
-		return new ResponseEntity<>(lista, null, 200) ;
+		return new ResponseEntity<>(lista, null, 200);
 	}
 
 //	// POST
@@ -84,20 +85,20 @@ public class EstudianteControllerRestful {
 //		this.estudianteService.insertar(estudiante);
 //	}
 
-	@PostMapping(consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Estudiante insertarYConsultar(@RequestBody Estudiante estudiante) {
 		return this.estudianteService.insertarEstudiante(estudiante);
 	}
 
 	// PUT
-	@PutMapping(path = "/{identificador}")
+	@PutMapping(path = "/{identificador}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void actualizar(@RequestBody Estudiante estudiante, @PathVariable Integer identificador) {
 		estudiante.setId(identificador);
 		this.estudianteService.actualizar(estudiante);
 	}
 
 	// PATCH
-	@PatchMapping(path = "/{identificador}")
+	@PatchMapping(path = "/{identificador}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void actualizarParcial(@RequestBody Estudiante estudiante, @PathVariable Integer identificador) {
 		estudiante.setId(identificador);
 		Estudiante e1 = this.estudianteService.consultarPorID(identificador);
