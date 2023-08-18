@@ -79,16 +79,17 @@ public class EstudianteControllerRestful {
 		return new ResponseEntity<>(lista, null, 200);
 	}
 
-//	// POST
-//	@PostMapping(consumes = "application/xml")
-//	public void insertar(@RequestBody Estudiante estudiante) {
-//		this.estudianteService.insertar(estudiante);
-//	}
-
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Estudiante insertarYConsultar(@RequestBody Estudiante estudiante) {
-		return this.estudianteService.insertarEstudiante(estudiante);
+	// POST
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public void insertar(@RequestBody Estudiante estudiante) {
+		this.estudianteService.insertar(estudiante);
 	}
+
+//	@PostMapping()
+//	public Estudiante insertarYConsultar(@RequestBody Estudiante estudiante) {
+//		return this.estudianteService.insertarEstudiante(estudiante);
+//	}
 
 	// PUT
 	@PutMapping(path = "/{identificador}", consumes = MediaType.APPLICATION_JSON_VALUE)
